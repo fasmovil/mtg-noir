@@ -1,8 +1,9 @@
 import express from 'express';
+import { fileURLToPath } from 'node:url';
 import { searchCard } from './routes/cards.js';
 import { ScryfallError } from './services/scryfall.js';
 
-const app = express();
+export const app = express();
 const port = process.env.PORT || 3001;
 
 app.get('/api/health', (_request, response) => {
@@ -11,7 +12,7 @@ app.get('/api/health', (_request, response) => {
 
 app.get('/api/cards/search', searchCard);
 
-app.use((error, _request, response, _next) => {
+export function errorHandler(error, _request, response, _next) {
   if (error instanceof ScryfallError) {
     const code = error.status === 404 ? 'CARD_NOT_FOUND' : 'SCRYFALL_ERROR';
 
@@ -28,11 +29,15 @@ app.use((error, _request, response, _next) => {
   return response.status(500).json({
     error: {
       code: 'INTERNAL_ERROR',
-      message: 'Ocurrió un error interno del servidor.',
+      message: 'An unexpected server error occurred.',
     },
   });
-});
+}
 
-app.listen(port, () => {
-  console.log(`MTG Noir backend listening on http://localhost:${port}`);
-});
+app.use(errorHandler);
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  app.listen(port, () => {
+    console.log(`MTG Noir backend listening on http://localhost:${port}`);
+  });
+}

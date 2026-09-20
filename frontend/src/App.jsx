@@ -10,7 +10,7 @@ function App() {
 
   async function handleSearch(name) {
     setStatus('loading');
-    setMessage('Buscando en el archivo de cartas…');
+    setMessage('Searching the card archive…');
     setCard(null);
 
     try {
@@ -19,7 +19,7 @@ function App() {
       setStatus('success');
       setMessage('');
     } catch (error) {
-      setStatus('error');
+      setStatus(error.code === 'CARD_NOT_FOUND' ? 'not-found' : 'error');
       setMessage(error.message);
     }
   }
@@ -36,9 +36,10 @@ function App() {
 
       <SearchBar isLoading={status === 'loading'} onSearch={handleSearch} />
 
-      <section className="result-area">
-        {status === 'idle' && <p className="status-message">Introduce el nombre de una carta para consultarla.</p>}
+      <section className="result-area" aria-live="polite">
+        {status === 'idle' && <p className="status-message">Enter a card name to search the archive.</p>}
         {status === 'loading' && <p className="status-message loading-message" role="status">{message}</p>}
+        {status === 'not-found' && <p className="status-message not-found-message" role="status">{message}</p>}
         {status === 'error' && <p className="status-message error-message" role="alert">{message}</p>}
         {status === 'success' && <CardDisplay card={card} />}
       </section>

@@ -9,7 +9,7 @@ function SearchBar({ isLoading, onSearch }) {
     const normalizedName = name.trim();
 
     if (!normalizedName) {
-      setValidationMessage('Escribe el nombre de una carta para buscarla.');
+      setValidationMessage('Enter a card name to search.');
       return;
     }
 
@@ -35,14 +35,14 @@ function SearchBar({ isLoading, onSearch }) {
           type="search"
           value={name}
           onChange={handleNameChange}
-          placeholder="Ej. Lightning Bolt"
+          placeholder="e.g. Lightning Bolt"
           maxLength="200"
           aria-describedby={validationMessage ? 'card-name-error' : undefined}
           aria-invalid={Boolean(validationMessage)}
           disabled={isLoading}
         />
         <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Buscando…' : 'Search'}
+          {isLoading ? 'Searching…' : 'Search'}
         </button>
       </div>
       {validationMessage && (

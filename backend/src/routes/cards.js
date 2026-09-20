@@ -9,7 +9,7 @@ export async function searchCard(request, response, next) {
     return response.status(400).json({
       error: {
         code: 'INVALID_NAME',
-        message: 'El parámetro "name" es obligatorio.',
+        message: 'The "name" parameter is required.',
       },
     });
   }
@@ -20,7 +20,7 @@ export async function searchCard(request, response, next) {
     return response.status(400).json({
       error: {
         code: 'INVALID_NAME',
-        message: `El parámetro "name" no puede superar ${MAX_NAME_LENGTH} caracteres.`,
+        message: `The "name" parameter cannot exceed ${MAX_NAME_LENGTH} characters.`,
       },
     });
   }
