@@ -1,3 +1,11 @@
+export class CardSearchError extends Error {
+  constructor(code, message) {
+    super(message);
+    this.name = 'CardSearchError';
+    this.code = code;
+  }
+}
+
 export async function searchCard(name) {
   const url = new URL('/api/cards/search', window.location.origin);
   url.searchParams.set('name', name);
@@ -7,17 +15,17 @@ export async function searchCard(name) {
   try {
     response = await fetch(url);
   } catch {
-    throw new Error('No se pudo conectar con el servidor. Inténtalo de nuevo.');
+    throw new CardSearchError('NETWORK_ERROR', 'Could not connect to the MTG Noir server. Please try again.');
   }
 
   const isJson = response.headers.get('content-type')?.includes('application/json');
 
   if (!isJson) {
     if (response.status === 404) {
-      throw new Error('El servicio de búsqueda no está disponible. Verifica que el backend de MTG Noir esté activo en el puerto 3001.');
+      throw new CardSearchError('BACKEND_UNAVAILABLE', 'The search service is unavailable. Check that the MTG Noir backend is running on port 3001.');
     }
 
-    throw new Error('El servidor devolvió una respuesta inesperada.');
+    throw new CardSearchError('INVALID_RESPONSE', 'The server returned an unexpected response.');
   }
 
   let payload;
@@ -25,11 +33,15 @@ export async function searchCard(name) {
   try {
     payload = await response.json();
   } catch {
-    throw new Error('El servidor devolvió una respuesta inesperada.');
+    throw new CardSearchError('INVALID_RESPONSE', 'The server returned an unexpected response.');
   }
 
   if (!response.ok) {
-    throw new Error(payload.error?.message || 'No se pudo completar la búsqueda.');
+    const error = payload?.error;
+    throw new CardSearchError(
+      error?.code || 'SEARCH_FAILED',
+      error?.message || 'The card search could not be completed.',
+    );
   }
 
   return payload;

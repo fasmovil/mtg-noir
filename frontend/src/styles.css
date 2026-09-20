@@ -174,15 +174,20 @@ button:focus-visible, input:focus-visible {
 .status-message::before { margin-right: 0.75rem; color: #64dbe3; content: ">_"; }
 .error-message { border-color: rgba(194, 91, 150, 0.45); color: #e8accb; }
 .error-message::before { color: #d678ae; content: "!"; }
+.not-found-message { border-color: rgba(152, 119, 184, 0.42); color: #d6c0e5; }
+.not-found-message::before { color: #c38bd0; content: "?"; }
 .loading-message { color: #a7d5d7; }
 
 .result-area { margin-top: 2rem; }
 
 .card-display {
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+.card-primary {
   display: grid;
   grid-template-columns: minmax(205px, 330px) minmax(0, 1fr);
   gap: clamp(1.5rem, 4vw, 3.4rem);
-  padding: clamp(1.25rem, 3vw, 2.25rem);
 }
 
 .card-image-container {
@@ -194,6 +199,22 @@ button:focus-visible, input:focus-visible {
 }
 
 .card-image { display: block; width: 100%; height: auto; box-shadow: 0 13px 24px rgba(0, 0, 0, 0.5); }
+.card-image-placeholder {
+  display: grid;
+  place-content: center;
+  min-height: 18rem;
+  padding: 1.5rem;
+  border: 1px dashed rgba(94, 203, 212, 0.42);
+  color: #a8dfe3;
+  background:
+    linear-gradient(135deg, transparent 48%, rgba(94, 203, 212, 0.07) 49%, rgba(94, 203, 212, 0.07) 51%, transparent 52%),
+    #071015;
+  box-shadow: inset 0 0 28px rgba(17, 128, 142, 0.13);
+  text-align: center;
+}
+
+.card-image-placeholder span { font-size: 0.76rem; letter-spacing: 0.13em; }
+.card-image-placeholder small { margin-top: 0.65rem; color: #8e6a96; font-size: 0.58rem; letter-spacing: 0.12em; }
 .card-details { min-width: 0; padding-top: 0.2rem; }
 
 .card-title-row {
@@ -245,11 +266,37 @@ button:focus-visible, input:focus-visible {
 .card-metadata dt { color: #70999e; font-size: 0.61rem; letter-spacing: 0.12em; text-transform: uppercase; }
 .card-metadata dd { margin: 0.38rem 0 0; color: #c6e0e2; font-size: 0.75rem; line-height: 1.35; }
 
+.card-faces {
+  margin-top: clamp(1.75rem, 4vw, 2.8rem);
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(102, 186, 195, 0.22);
+}
+
+.card-face-list { display: grid; gap: 1rem; margin-top: 0.9rem; }
+
+.card-face {
+  display: grid;
+  grid-template-columns: minmax(110px, 180px) minmax(0, 1fr);
+  gap: 1.2rem;
+  padding: 1rem;
+  border: 1px solid rgba(96, 174, 185, 0.19);
+  background: rgba(3, 9, 12, 0.34);
+}
+
+.card-face-image { width: 100%; }
+.card-face .card-image-placeholder { min-height: 10rem; }
+.card-face .card-details { padding-top: 0; }
+.card-face .card-title-row { margin-top: 0; }
+.card-face .card-details h3 { margin: 0; color: #edf9fa; font-family: Arial, sans-serif; font-size: clamp(1.15rem, 2.5vw, 1.55rem); font-weight: 400; line-height: 1.15; }
+.card-face .type-line { margin-top: 0.75rem; }
+.card-face .oracle-text { margin-top: 0.85rem; font-size: 0.86rem; }
+.face-index { margin: 0 0 0.45rem; color: #9c739d; font-size: 0.61rem; letter-spacing: 0.13em; }
+
 @media (max-width: 700px) {
   .app-shell { width: min(100% - 2rem, 1120px); padding-top: 2.25rem; }
   .app-header { align-items: flex-start; flex-direction: column; gap: 0.9rem; }
   .header-status { margin-bottom: 0; }
-  .search-controls, .card-display { display: grid; grid-template-columns: 1fr; }
+  .search-controls, .card-primary { display: grid; grid-template-columns: 1fr; }
   .search-controls button { min-height: 3rem; }
   .card-image-container { width: min(100%, 330px); }
 }
@@ -258,4 +305,6 @@ button:focus-visible, input:focus-visible {
   .search-bar, .card-display { padding: 1rem; }
   .search-bar-header, .card-title-row { align-items: flex-start; flex-direction: column; }
   .card-metadata { grid-template-columns: 1fr; }
+  .card-face { grid-template-columns: 1fr; }
+  .card-face-image { width: min(100%, 220px); }
 }

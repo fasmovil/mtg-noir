@@ -11,9 +11,9 @@
 
 **Purpose**: Prepare the repository and its existing backend for the approved verification workflow.
 
-- [ ] T001 Verify the active feature metadata in `.specify/feature.json` and create or switch to the `001-v1-baseline-alignment` Git branch before modifying application source files.
-- [ ] T002 [P] Add a backend test script that invokes Node's built-in test runner in `backend/package.json`.
-- [ ] T003 [P] Add deterministic Scryfall payload and error fixtures for exact, Scryfall fuzzy (tolerant), normal, multi-face, image-less, malformed-data, network-failure, and timeout responses in `backend/test/fixtures/scryfall.js`.
+- [X] T001 Verify the active feature metadata in `.specify/feature.json` and create or switch to the `001-v1-baseline-alignment` Git branch before modifying application source files.
+- [X] T002 [P] Add a backend test script that invokes Node's built-in test runner in `backend/package.json`.
+- [X] T003 [P] Add deterministic Scryfall payload and error fixtures for exact, Scryfall fuzzy (tolerant), normal, multi-face, image-less, malformed-data, network-failure, and timeout responses in `backend/test/fixtures/scryfall.js`.
 
 ---
 
@@ -21,7 +21,7 @@
 
 **Purpose**: Establish reusable test support required by the backend conformity checks.
 
-- [ ] T004 Create reusable mock-fetch setup, sequential response, timeout, and restoration helpers for backend tests in `backend/test/helpers/mockFetch.js`.
+- [X] T004 Create reusable mock-fetch setup, sequential response, timeout, and restoration helpers for backend tests in `backend/test/helpers/mockFetch.js`.
 
 **Checkpoint**: Test tooling can exercise the Scryfall adapter without making network requests.
 
@@ -33,10 +33,10 @@
 
 **Independent Test**: With mocked Scryfall responses, verify that an exact result causes one exact request, an exact 404 causes one Scryfall fuzzy (tolerant) retry, unresolved exact-plus-fuzzy requests return `CARD_NOT_FOUND`, and network, malformed-data, and timeout failures do not trigger fallback or expose Scryfall-specific payloads.
 
-- [ ] T005 [US1] Write adapter tests for exact-first lookup, Scryfall fuzzy (tolerant) fallback after an exact 404, unresolved cards, network failures, malformed JSON or invalid catalog payloads, and abort-timeout behavior in `backend/test/scryfall-search.test.js`.
-- [ ] T006 [US1] Implement exact Scryfall lookup followed only by a 404-triggered Scryfall fuzzy (tolerant) fallback, preserving canonical English `oracle_text`, in `backend/src/services/scryfall.js`.
-- [ ] T007 [P] [US1] Map missing names, unresolved cards, malformed catalog data, Scryfall failures, timeouts, and unexpected failures to the stable English API error contract in `backend/src/routes/cards.js` and `backend/src/server.js`.
-- [ ] T008 [US1] Add route-level tests for a valid search, absent `name`, `CARD_NOT_FOUND`, malformed catalog data, timeout, and Scryfall error mapping in `backend/test/cards-search.test.js`.
+- [X] T005 [US1] Write adapter tests for exact-first lookup, Scryfall fuzzy (tolerant) fallback after an exact 404, unresolved cards, network failures, malformed JSON or invalid catalog payloads, and abort-timeout behavior in `backend/test/scryfall-search.test.js`.
+- [X] T006 [US1] Implement exact Scryfall lookup followed only by a 404-triggered Scryfall fuzzy (tolerant) fallback, preserving canonical English `oracle_text`, in `backend/src/services/scryfall.js`.
+- [X] T007 [P] [US1] Map missing names, unresolved cards, malformed catalog data, Scryfall failures, timeouts, and unexpected failures to the stable English API error contract in `backend/src/routes/cards.js` and `backend/src/server.js`.
+- [X] T008 [US1] Add route-level tests for a valid search, absent `name`, `CARD_NOT_FOUND`, malformed catalog data, timeout, and Scryfall error mapping in `backend/test/cards-search.test.js`.
 
 **Checkpoint**: A caller of `GET /api/cards/search?name=…` receives the approved search behavior and error contract without depending on Scryfall response shapes.
 
@@ -48,10 +48,10 @@
 
 **Independent Test**: Normalize mocked normal and multi-face Scryfall cards and assert an empty `faces` array for normal cards, face objects with the required fields for multi-face cards, and `null` for unavailable values. Then use the documented live multi-face validation card and confirm the visible card information is usable at desktop and narrow widths.
 
-- [ ] T009 [US2] Write normal-card, multi-face-card, optional-field, and canonical-Oracle DTO normalization tests in `backend/test/scryfall-dto.test.js`.
-- [ ] T010 [US2] Extend the application DTO mapper to retain all top-level fields and add `faces` with nullable face fields from Scryfall `card_faces` in `backend/src/services/scryfall.js`.
-- [ ] T011 [US2] Render the top-level card data and every available face from the stable DTO in `frontend/src/components/CardDisplay.jsx`.
-- [ ] T012 [US2] Add responsive multi-face presentation rules that preserve the existing MTG Noir visual hierarchy in `frontend/src/styles.css`.
+- [X] T009 [US2] Write normal-card, multi-face-card, optional-field, and canonical-Oracle DTO normalization tests in `backend/test/scryfall-dto.test.js`.
+- [X] T010 [US2] Extend the application DTO mapper to retain all top-level fields and add `faces` with nullable face fields from Scryfall `card_faces` in `backend/src/services/scryfall.js`.
+- [X] T011 [US2] Render the top-level card data and every available face from the stable DTO in `frontend/src/components/CardDisplay.jsx`.
+- [X] T012 [US2] Add responsive multi-face presentation rules that preserve the existing MTG Noir visual hierarchy in `frontend/src/styles.css`.
 
 **Checkpoint**: Normal cards still render as before with `faces: []`; multi-face cards expose and display all relevant supplied faces without the frontend reading Scryfall fields.
 
@@ -63,11 +63,11 @@
 
 **Independent Test**: In the browser, verify initial, loading, success, `CARD_NOT_FOUND`, and unexpected-error states in English; follow `validation-fixtures.md` to use its local response override for an image-less DTO and confirm the placeholder has useful accessible text and maintains the card panel layout on narrow and wide screens.
 
-- [ ] T013 [US3] Preserve API error codes in a structured client error and translate invalid-response and unexpected-network failures in `frontend/src/services/cardsApi.js`.
-- [ ] T014 [US3] Map `CARD_NOT_FOUND` to a distinct `not-found` state, map all other failures to `error`, and render English state feedback in `frontend/src/App.jsx`.
-- [ ] T015 [P] [US3] Update the search field label, validation feedback, button text, and related accessibility text to English in `frontend/src/components/SearchBar.jsx`.
-- [ ] T016 [US3] Replace the plain unavailable-image message with an accessible intentional placeholder component state in `frontend/src/components/CardDisplay.jsx`.
-- [ ] T017 [US3] Style the missing-image placeholder and its responsive behavior consistently with the existing restrained noir/neon interface in `frontend/src/styles.css`.
+- [X] T013 [US3] Preserve API error codes in a structured client error and translate invalid-response and unexpected-network failures in `frontend/src/services/cardsApi.js`.
+- [X] T014 [US3] Map `CARD_NOT_FOUND` to a distinct `not-found` state, map all other failures to `error`, and render English state feedback in `frontend/src/App.jsx`.
+- [X] T015 [P] [US3] Update the search field label, validation feedback, button text, and related accessibility text to English in `frontend/src/components/SearchBar.jsx`.
+- [X] T016 [US3] Replace the plain unavailable-image message with an accessible intentional placeholder component state in `frontend/src/components/CardDisplay.jsx`.
+- [X] T017 [US3] Style the missing-image placeholder and its responsive behavior consistently with the existing restrained noir/neon interface in `frontend/src/styles.css`.
 
 **Checkpoint**: Visible UI text is English, `CARD_NOT_FOUND` is visibly distinct from other errors, and an image-less card keeps a deliberate, accessible visual treatment.
 
@@ -77,9 +77,9 @@
 
 **Purpose**: Prove the approved contract is met without adding product scope, then produce traceable evidence for the normative-baseline decision.
 
-- [ ] T018 Run the clean-install, backend-test, backend-startup, frontend-build, and repeatable browser verification matrix in `specs/001-v1-baseline-alignment/quickstart.md` and `specs/001-v1-baseline-alignment/validation-fixtures.md`.
-- [ ] T019 Compare the completed behavior against every requirement and deferred boundary in `specs/001-v1-baseline-alignment/spec.md` and the response contract in `specs/001-v1-baseline-alignment/contracts/cards-search.md`; determine any residual conformity gaps.
-- [ ] T020 Create `specs/001-v1-baseline-alignment/conformity-evidence.md` with the validation date, executed commands, results, browser validation inputs, residual-gap assessment, and explicit final `conformant` or `non-conformant` decision, including an explicit zero-gap result when applicable.
+- [X] T018 Run the clean-install, backend-test, backend-startup, frontend-build, and repeatable browser verification matrix in `specs/001-v1-baseline-alignment/quickstart.md` and `specs/001-v1-baseline-alignment/validation-fixtures.md`.
+- [X] T019 Compare the completed behavior against every requirement and deferred boundary in `specs/001-v1-baseline-alignment/spec.md` and the response contract in `specs/001-v1-baseline-alignment/contracts/cards-search.md`; determine any residual conformity gaps.
+- [X] T020 Create `specs/001-v1-baseline-alignment/conformity-evidence.md` with the validation date, executed commands, results, browser validation inputs, residual-gap assessment, and explicit final `conformant` or `non-conformant` decision, including an explicit zero-gap result when applicable.
 
 ---
 
@@ -117,3 +117,9 @@
 | US3 — structured errors, English UI, and placeholder | T013–T017 | 5 |
 | Polish and verification | T018–T020 | 3 |
 | **Total** |  | **20** |
+
+---
+
+## Phase 7: Convergence
+
+- [X] T021 Replace the Spanish `INTERNAL_ERROR` fallback message with English and add a 500-response assertion in `backend/src/server.js` and `backend/test/cards-search.test.js` per FR-010 and FR-014 (partial).
