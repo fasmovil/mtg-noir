@@ -1,20 +1,20 @@
 # Research: MTG Noir V1 Baseline Alignment
 
-## Exact Lookup Before Tolerant Fallback
+## Exact Lookup Before Scryfall Fuzzy (Tolerant) Fallback
 
 **Decision**: Query the card catalog for an exact name first. Only when that lookup reports that
-no card was found, issue one tolerant-name lookup. Do not issue tolerant matching after an exact
-success or an operational error.
+no card was found, issue one Scryfall fuzzy (tolerant) lookup. Do not issue Scryfall fuzzy
+(tolerant) matching after an exact success or an operational error.
 
 **Rationale**: This implements the approved search policy, makes expected names predictable, and
 keeps selection behavior delegated to the catalog.
 
 **Alternatives considered**:
 
-- Tolerant lookup only: rejected because it is a known conformity gap.
+- Scryfall fuzzy (tolerant) lookup only: rejected because it is a known conformity gap.
 - Local ambiguity scoring: rejected by the specification.
-- Tolerant fallback after an upstream error: rejected because an error is not evidence that no
-  exact card exists.
+- Scryfall fuzzy (tolerant) fallback after an upstream error: rejected because an error is not
+  evidence that no exact card exists.
 
 ## English Oracle Text
 

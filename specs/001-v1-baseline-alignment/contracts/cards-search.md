@@ -67,8 +67,8 @@ face:
 ## Search Policy
 
 1. Resolve an exact card-name match.
-2. If no exact card exists, attempt catalog-provided tolerant matching.
-3. If tolerant matching does not resolve a valid card, return `CARD_NOT_FOUND`.
+2. If no exact card exists, attempt Scryfall fuzzy (tolerant) matching.
+3. If Scryfall fuzzy (tolerant) matching does not resolve a valid card, return `CARD_NOT_FOUND`.
 4. Do not apply application-owned ambiguity heuristics.
 
 ## Error Response

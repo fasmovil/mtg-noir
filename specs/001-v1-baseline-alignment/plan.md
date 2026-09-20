@@ -9,8 +9,8 @@ missing-image contract without adding product functionality.
 ## Summary
 
 Bring the existing single-card lookup into V1 conformity through focused changes in the existing
-backend adapter and frontend presentation. The backend will perform exact lookup before catalog
-tolerant fallback, normalize cards and relevant faces into the stable DTO, and preserve canonical
+backend adapter and frontend presentation. The backend will perform exact lookup before Scryfall
+fuzzy (tolerant) fallback, normalize cards and relevant faces into the stable DTO, and preserve canonical
 English Oracle text. The frontend will consume the expanded DTO, render each available face, use
 English feedback, and show a Noir placeholder for absent images. No new runtime dependencies,
 state layers, storage, endpoints, or infrastructure are required.
@@ -24,8 +24,10 @@ state layers, storage, endpoints, or infrastructure are required.
 **Storage**: N/A; the application retains no persistent card data.
 
 **Testing**: Node's built-in test runner for backend behavior and DTO normalization; manual browser
-acceptance validation for frontend states; Vite production build. No test framework is currently
-installed, and no new framework will be introduced for this alignment.
+acceptance validation for frontend states using documented live-card targets and a browser-local
+response override for the image-less state; Vite production build. Backend tests explicitly cover
+malformed catalog data and timeout behavior. No test framework is currently installed, and no new
+framework will be introduced for this alignment.
 
 **Target Platform**: Modern desktop and mobile browsers with a Node.js backend process.
 
@@ -63,9 +65,11 @@ specs/001-v1-baseline-alignment/
 ├── research.md
 ├── data-model.md
 ├── quickstart.md
+├── validation-fixtures.md     # Repeatable live and browser-local frontend validation data
 ├── contracts/
 │   └── cards-search.md
-└── tasks.md                 # Created later by $speckit-tasks
+├── tasks.md
+└── conformity-evidence.md    # Created after validation; records the final decision
 ```
 
 ### Source Code (repository root)
@@ -87,7 +91,7 @@ frontend/
 │   │   ├── CardDisplay.jsx   # Existing card, face, and placeholder presentation
 │   │   └── SearchBar.jsx     # Existing input validation text
 │   ├── services/
-│   │   └── cardsApi.js       # Existing backend client and error presentation
+│   │   └── cardsApi.js       # Existing backend client, structured errors, and error presentation
 │   └── styles.css            # Existing Noir responsive styles and placeholder styling
 └── package.json              # Build script; no dependency additions planned
 ```

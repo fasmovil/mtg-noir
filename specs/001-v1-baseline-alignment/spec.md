@@ -13,24 +13,25 @@ the V1 baseline as normative.
 
 ### User Story 1 - Find a card using the approved search policy (Priority: P1)
 
-As a user, I want a card search to prefer an exact name and only fall back to a tolerant search
-when no exact card exists, so that expected card names resolve predictably without adding product
-specific matching rules.
+As a user, I want a card search to prefer an exact name and only fall back to Scryfall fuzzy
+(tolerant) matching when no exact card exists, so that expected card names resolve predictably
+without adding product-specific matching rules.
 
 **Why this priority**: Search is the primary V1 user journey and must conform before the baseline
 can be frozen.
 
-**Independent Test**: Search for a card with an exact name, a name requiring a tolerant fallback,
+**Independent Test**: Search for a card with an exact name, a name requiring Scryfall fuzzy
+(tolerant) fallback,
 and a name that the card catalog cannot resolve.
 
 **Acceptance Scenarios**:
 
 1. **Given** an exact card name, **When** the user searches for it, **Then** the application
-   returns the exact card without requiring a tolerant fallback.
-2. **Given** no exact card name but a valid tolerant catalog match, **When** the user searches,
+   returns the exact card without requiring a Scryfall fuzzy (tolerant) fallback.
+2. **Given** no exact card name but a valid Scryfall fuzzy (tolerant) catalog match, **When** the user searches,
    **Then** the application returns the card resolved by the catalog.
 3. **Given** the catalog cannot resolve a valid card, **When** the user searches, **Then** the
-   application reports `CARD_NOT_FOUND` and presents a clear not-found state.
+   application reports `CARD_NOT_FOUND` and presents a distinct clear not-found state.
 4. **Given** the card catalog is unavailable or returns an error, **When** the user searches,
    **Then** the application presents a clear error state and does not select a card itself.
 
@@ -85,9 +86,9 @@ states of the search experience.
 
 ### Edge Cases
 
-- An exact search that returns no card triggers tolerant matching; an unavailable catalog or an
-  invalid response triggers an error state instead of a tolerant fallback.
-- A tolerant search that does not produce a valid card returns `CARD_NOT_FOUND`; the application
+- An exact search that returns no card triggers Scryfall fuzzy (tolerant) matching; an unavailable
+  catalog or an invalid response triggers an error state instead of a fuzzy fallback.
+- Scryfall fuzzy (tolerant) matching that does not produce a valid card returns `CARD_NOT_FOUND`; the application
   does not introduce its own ambiguity-resolution heuristics.
 - A card or face may omit an applicable value or image; the result remains renderable with `null`
   values and, for a missing primary image, the MTG Noir placeholder.
@@ -97,10 +98,10 @@ states of the search experience.
 
 ### Functional Requirements
 
-- **FR-001**: The system MUST attempt to find an exact card-name match before attempting a
-  tolerant name match.
-- **FR-002**: The system MUST attempt tolerant name matching only when no exact match exists.
-- **FR-003**: The system MUST delegate tolerant matching to the card catalog and MUST NOT apply
+- **FR-001**: The system MUST attempt to find an exact card-name match before attempting Scryfall
+  fuzzy (tolerant) matching.
+- **FR-002**: The system MUST attempt Scryfall fuzzy (tolerant) matching only when no exact match exists.
+- **FR-003**: The system MUST delegate Scryfall fuzzy (tolerant) matching to the card catalog and MUST NOT apply
   custom heuristics to select among ambiguous cards.
 - **FR-004**: When the card catalog cannot resolve a valid card after the approved search policy,
   the system MUST return the `CARD_NOT_FOUND` result.
@@ -120,6 +121,8 @@ states of the search experience.
   preserves the MTG Noir noir, neon, and retrofuturistic identity.
 - **FR-012**: The search experience MUST clearly represent initial, loading, successful,
   not-found, and error states while preserving basic keyboard and assistive-technology usability.
+  A `CARD_NOT_FOUND` API error MUST map to the distinct not-found presentation; other failures
+  MUST map to the error presentation.
 - **FR-013**: The feature MUST NOT introduce autocomplete, edition selection, internationalization,
   persistent storage, or other new product functionality.
 - **FR-014**: Conformity verification MUST cover valid search, missing `name`, card not found,
@@ -139,7 +142,7 @@ states of the search experience.
 
 ### Measurable Outcomes
 
-- **SC-001**: All acceptance scenarios for exact search, tolerant fallback, unresolved cards, and
+- **SC-001**: All acceptance scenarios for exact search, Scryfall fuzzy (tolerant) fallback, unresolved cards, and
   catalog errors pass without custom ambiguity selection.
 - **SC-002**: All tested normal-card results expose an empty `faces` array, and all tested
   multi-face results expose every available relevant face without removing top-level fields.
@@ -153,7 +156,7 @@ states of the search experience.
 ## Assumptions
 
 - The existing card catalog remains the source of card names, details, prints, and images.
-- The printing selected through the approved exact-then-tolerant search policy is accepted for V1;
+- The printing selected through the approved exact-match then Scryfall fuzzy (tolerant) search policy is accepted for V1;
   users do not choose an edition.
 - The exact visual composition of multi-face cards and the missing-image placeholder belongs to
   later design work, provided the contractual outcomes in this specification are met.
