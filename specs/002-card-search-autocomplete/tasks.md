@@ -9,8 +9,8 @@
 
 ## Phase 1: Setup
 
-- [ ] T001 Create or switch to the Git feature branch `002-card-search-autocomplete` and confirm `.specify/feature.json` identifies `specs/002-card-search-autocomplete` before modifying source files.
-- [ ] T002 [P] Add deterministic Scryfall autocomplete catalog fixtures for successful suggestions, an empty catalog, malformed upstream data, an upstream error, and a timeout in `backend/test/fixtures/scryfall.js`.
+- [X] T001 Create or switch to the Git feature branch `002-card-search-autocomplete` and confirm `.specify/feature.json` identifies `specs/002-card-search-autocomplete` before modifying source files.
+- [X] T002 [P] Add deterministic Scryfall autocomplete catalog fixtures for successful suggestions, an empty catalog, malformed upstream data, an upstream error, and a timeout in `backend/test/fixtures/scryfall.js`.
 
 ---
 
@@ -28,16 +28,16 @@ No new shared framework or infrastructure is needed. This feature uses the exist
 
 ### Tests for User Story 1
 
-- [ ] T003 [P] [US1] Add service-level tests for Scryfall autocomplete normalization, empty results, malformed upstream catalogs, upstream failures, timeouts, and 125 ms minimum outbound-request spacing in `backend/test/scryfall-autocomplete.test.js`.
-- [ ] T004 [P] [US1] Add endpoint contract tests for `GET /api/cards/autocomplete`, including valid suggestions, empty suggestions, missing or invalid `q`, Scryfall errors, and the stable names-only response in `backend/test/cards-autocomplete.test.js`.
+- [X] T003 [P] [US1] Add service-level tests for Scryfall autocomplete normalization, empty results, malformed upstream catalogs, upstream failures, timeouts, and 125 ms minimum outbound-request spacing in `backend/test/scryfall-autocomplete.test.js`.
+- [X] T004 [P] [US1] Add endpoint contract tests for `GET /api/cards/autocomplete`, including valid suggestions, empty suggestions, missing or invalid `q`, Scryfall errors, and the stable names-only response in `backend/test/cards-autocomplete.test.js`.
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Implement the Scryfall autocomplete adapter and names-only normalization, including short-query handling, existing request safety conventions, and process-level 125 ms outbound-request spacing in `backend/src/services/scryfall.js`.
-- [ ] T006 [US1] Add `GET /api/cards/autocomplete` query validation, the stable `{ suggestions: string[] }` response, and existing error mapping in `backend/src/routes/cards.js` and `backend/src/server.js`.
-- [ ] T007 [US1] Add a frontend autocomplete API client that consumes the stable backend response and exposes structured API errors in `frontend/src/services/cardsApi.js`.
-- [ ] T008 [US1] Add a 300 ms input debounce, autocomplete request state, names-only suggestions, stale-response protection, and pointer/touch selection that invokes the existing `onSearch` flow in `frontend/src/components/SearchBar.jsx`.
-- [ ] T009 [US1] Add responsive Noir-consistent styling for the name-only suggestion list and selectable items in `frontend/src/styles.css`.
+- [X] T005 [US1] Implement the Scryfall autocomplete adapter and names-only normalization, including short-query handling, existing request safety conventions, and process-level 125 ms outbound-request spacing in `backend/src/services/scryfall.js`.
+- [X] T006 [US1] Add `GET /api/cards/autocomplete` query validation, the stable `{ suggestions: string[] }` response, and existing error mapping in `backend/src/routes/cards.js` and `backend/src/server.js`.
+- [X] T007 [US1] Add a frontend autocomplete API client that consumes the stable backend response and exposes structured API errors in `frontend/src/services/cardsApi.js`.
+- [X] T008 [US1] Add a 300 ms input debounce, autocomplete request state, names-only suggestions, stale-response protection, and pointer/touch selection that invokes the existing `onSearch` flow in `frontend/src/components/SearchBar.jsx`.
+- [X] T009 [US1] Add responsive Noir-consistent styling for the name-only suggestion list and selectable items in `frontend/src/styles.css`.
 
 **Checkpoint**: Pointer and touch selection work end to end, the existing direct search remains functional, and backend autocomplete tests pass.
 
@@ -51,8 +51,8 @@ No new shared framework or infrastructure is needed. This feature uses the exist
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] Add semantic combobox/listbox/option relationships and implement ArrowUp, ArrowDown, Enter, and Escape behavior in `frontend/src/components/SearchBar.jsx`.
-- [ ] T011 [US2] Add visible active-item and keyboard-focus styling that remains usable at narrow viewport widths in `frontend/src/styles.css`.
+- [X] T010 [US2] Add semantic combobox/listbox/option relationships and implement ArrowUp, ArrowDown, Enter, and Escape behavior in `frontend/src/components/SearchBar.jsx`.
+- [X] T011 [US2] Add visible active-item and keyboard-focus styling that remains usable at narrow viewport widths in `frontend/src/styles.css`.
 
 **Checkpoint**: The documented keyboard sequence operates correctly without changing the existing Search-button or Enter-submit behavior when no suggestion is active.
 
@@ -66,8 +66,8 @@ No new shared framework or infrastructure is needed. This feature uses the exist
 
 ### Implementation for User Story 3
 
-- [ ] T012 [US3] Add English loading, empty-result, and error feedback for autocomplete; clear all autocomplete feedback for empty input; and keep direct submission available after an autocomplete error in `frontend/src/components/SearchBar.jsx`.
-- [ ] T013 [US3] Style autocomplete feedback and its screen-reader-facing status treatment consistently with the existing Noir interface in `frontend/src/styles.css`.
+- [X] T012 [US3] Add English loading, empty-result, and error feedback for autocomplete; clear all autocomplete feedback for empty input; and keep direct submission available after an autocomplete error in `frontend/src/components/SearchBar.jsx`.
+- [X] T013 [US3] Style autocomplete feedback and its screen-reader-facing status treatment consistently with the existing Noir interface in `frontend/src/styles.css`.
 
 **Checkpoint**: All autocomplete states are clear, non-blocking, responsive, and preserve the existing V1 card-search behavior.
 
@@ -75,10 +75,10 @@ No new shared framework or infrastructure is needed. This feature uses the exist
 
 ## Phase 6: Polish and cross-cutting validation
 
-- [ ] T014 Run the backend autocomplete test files and the full backend suite, including the deterministic 125 ms request-spacing assertion, then run `npm run build` in `frontend/`; record any fixes required by failures in the appropriate source and test tasks above.
-- [ ] T015 Execute the repeatable desktop and mobile browser scenarios, including the `Lightning` match query, the documented 300 ms client-debounce check, the `zzzzzzzzzzzzzzzzzzzz` no-match query, the request-blocking error procedure, and the defined 1440×900 and 390×844 viewports in `specs/002-card-search-autocomplete/quickstart.md`.
-- [ ] T016 Create `specs/002-card-search-autocomplete/conformity-evidence.md` recording the validation commands, browser scenario results, date, residual gaps (if any), and the final conformance decision against `spec.md`.
-- [ ] T017 Review `specs/002-card-search-autocomplete/spec.md`, `plan.md`, `tasks.md`, and `quickstart.md` after implementation so the task checkboxes, implementation notes, and conformance evidence accurately reflect the delivered feature without changing the approved product contract.
+- [X] T014 Run the backend autocomplete test files and the full backend suite, including the deterministic 125 ms request-spacing assertion, then run `npm run build` in `frontend/`; record any fixes required by failures in the appropriate source and test tasks above.
+- [X] T015 Execute the repeatable desktop and mobile browser scenarios, including the `Lightning` match query, the documented 300 ms client-debounce check, the `zzzzzzzzzzzzzzzzzzzz` no-match query, the request-blocking error procedure, and the defined 1440×900 and 390×844 viewports in `specs/002-card-search-autocomplete/quickstart.md`.
+- [X] T016 Create `specs/002-card-search-autocomplete/conformity-evidence.md` recording the validation commands, browser scenario results, date, residual gaps (if any), and the final conformance decision against `spec.md`.
+- [X] T017 Review `specs/002-card-search-autocomplete/spec.md`, `plan.md`, `tasks.md`, and `quickstart.md` after implementation so the task checkboxes, implementation notes, and conformance evidence accurately reflect the delivered feature without changing the approved product contract.
 
 ---
 

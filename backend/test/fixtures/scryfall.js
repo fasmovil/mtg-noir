@@ -57,3 +57,20 @@ export const notFoundPayload = {
   code: 'not_found',
   details: 'No cards found matching that query.',
 };
+
+export const autocompleteCatalog = {
+  object: 'catalog',
+  total_values: 2,
+  data: ['Lightning Bolt', 'Lightning Helix'],
+};
+
+export const emptyAutocompleteCatalog = {
+  object: 'catalog',
+  total_values: 0,
+  data: [],
+};
+
+export const invalidAutocompleteCatalog = {
+  object: 'catalog',
+  data: ['Lightning Bolt', 42],
+};

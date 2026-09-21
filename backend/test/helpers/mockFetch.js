@@ -28,7 +28,7 @@ export function installFetchMock(steps) {
   let index = 0;
 
   globalThis.fetch = async (input, init) => {
-    calls.push({ input: String(input), init });
+    calls.push({ input: String(input), init, requestedAt: Date.now() });
     const step = steps[index++];
 
     if (step === undefined) {

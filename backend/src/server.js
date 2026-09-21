@@ -1,6 +1,6 @@
 import express from 'express';
 import { fileURLToPath } from 'node:url';
-import { searchCard } from './routes/cards.js';
+import { autocompleteCards, searchCard } from './routes/cards.js';
 import { ScryfallError } from './services/scryfall.js';
 
 export const app = express();
@@ -11,6 +11,7 @@ app.get('/api/health', (_request, response) => {
 });
 
 app.get('/api/cards/search', searchCard);
+app.get('/api/cards/autocomplete', autocompleteCards);
 
 export function errorHandler(error, _request, response, _next) {
   if (error instanceof ScryfallError) {
