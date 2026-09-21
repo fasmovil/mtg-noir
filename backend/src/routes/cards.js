@@ -1,4 +1,4 @@
-import { getCardByName } from '../services/scryfall.js';
+import { getCardByName, getCardNameSuggestions } from '../services/scryfall.js';
 
 const MAX_NAME_LENGTH = 200;
 
@@ -28,6 +28,27 @@ export async function searchCard(request, response, next) {
   try {
     const card = await getCardByName(normalizedName);
     return response.json(card);
+  } catch (error) {
+    return next(error);
+  }
+}
+
+export async function autocompleteCards(request, response, next) {
+  const { q } = request.query;
+
+  if (typeof q !== 'string' || !q.trim()) {
+    return response.status(400).json({ error: { code: 'INVALID_QUERY', message: 'The "q" parameter is required.' } });
+  }
+
+  const query = q.trim();
+  if (query.length > MAX_NAME_LENGTH) {
+    return response.status(400).json({
+      error: { code: 'INVALID_QUERY', message: `The "q" parameter cannot exceed ${MAX_NAME_LENGTH} characters.` },
+    });
+  }
+
+  try {
+    return response.json({ suggestions: await getCardNameSuggestions(query) });
   } catch (error) {
     return next(error);
   }

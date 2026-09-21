@@ -308,3 +308,74 @@ button:focus-visible, input:focus-visible {
   .card-face { grid-template-columns: 1fr; }
   .card-face-image { width: min(100%, 220px); }
 }
+
+.suggestion-list {
+  position: relative;
+  max-height: min(15.5rem, 42vh);
+  margin: 0.5rem 0 0;
+  padding: 0.3rem 0.35rem;
+  overflow-y: auto;
+  border: 1px solid rgba(103, 191, 201, 0.3);
+  border-left-color: rgba(103, 219, 228, 0.58);
+  background:
+    linear-gradient(90deg, rgba(73, 189, 198, 0.11), transparent 4rem),
+    rgba(5, 13, 17, 0.96);
+  box-shadow:
+    inset 0 0 0 1px rgba(7, 12, 16, 0.75),
+    inset 0 0 22px rgba(19, 122, 135, 0.08),
+    0 13px 28px rgba(0, 0, 0, 0.22);
+  list-style: none;
+}
+
+.suggestion-list li {
+  position: relative;
+  margin: 0;
+  padding: 0.68rem 2rem 0.68rem 0.85rem;
+  border: 1px solid transparent;
+  border-bottom-color: rgba(96, 174, 185, 0.16);
+  color: #bcdadd;
+  cursor: pointer;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.suggestion-list li:last-child { border-bottom-color: transparent; }
+
+.suggestion-list li:hover, .suggestion-list li.is-active {
+  border-color: rgba(103, 219, 228, 0.52);
+  color: #effafb;
+  background: linear-gradient(90deg, rgba(30, 103, 112, 0.55), rgba(13, 48, 57, 0.34));
+  box-shadow: inset 3px 0 #67dbe4, inset -1px 0 rgba(198, 116, 184, 0.48), 0 0 13px rgba(73, 203, 214, 0.09);
+}
+
+.suggestion-list li.is-active::after {
+  position: absolute;
+  top: 50%;
+  right: 0.65rem;
+  width: 0.36rem;
+  height: 0.36rem;
+  border: 1px solid #d48ad0;
+  background: #68dfe5;
+  box-shadow: 0 0 8px rgba(98, 222, 228, 0.8);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.suggestion-list::-webkit-scrollbar { width: 0.55rem; }
+.suggestion-list::-webkit-scrollbar-track { border-left: 1px solid rgba(96, 174, 185, 0.18); background: #070d11; }
+.suggestion-list::-webkit-scrollbar-thumb { border: 1px solid rgba(91, 205, 214, 0.44); background: #274e56; }
+.suggestion-list::-webkit-scrollbar-thumb:hover { background: #396d75; }
+
+.suggestion-message {
+  margin: 0.65rem 0 0;
+  color: #9bc4c7;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.suggestion-message::before { margin-right: 0.55rem; color: #67dbe4; content: '>_'; }
+.suggestion-message.empty { color: #b8c2d7; }
+.suggestion-message.error { color: #e6aacb; }
+.suggestion-message.error::before { color: #d678ae; content: '!'; }

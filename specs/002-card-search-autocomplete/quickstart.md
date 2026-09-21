@@ -1,0 +1,80 @@
+# Quickstart: Validate Card Search Autocomplete
+
+## Prerequisites
+
+- Node.js 20 or later.
+- npm.
+- Access to the card catalog from the backend environment.
+
+## Install and Run
+
+From the repository root:
+
+```bash
+npm ci
+npm ci --prefix frontend
+npm ci --prefix backend
+npm run dev
+```
+
+The frontend runs at `http://localhost:5173` and the backend runs at
+`http://localhost:3001`.
+
+## Automated Backend Verification
+
+```bash
+npm test --prefix backend
+```
+
+Verify that automated coverage includes:
+
+1. Query validation and the stable autocomplete response shape.
+2. Name-only normalization, including removal of non-name catalog fields.
+3. Short query and no-match empty responses.
+4. Catalog errors, invalid catalog data, and timeout behavior.
+5. Preservation of the existing card-search tests and DTO behavior.
+
+## Frontend Acceptance Validation
+
+Use the browser at `http://localhost:5173` after backend startup.
+
+Use these repeatable inputs and viewport sizes:
+
+| Purpose | Value |
+|---------|-------|
+| Matching autocomplete query | `Lightning` |
+| Card selected and searched | `Lightning Bolt` |
+| Empty-result query | `zzzzzzzzzzzzzzzzzzzz` |
+| Desktop viewport | 1440 × 900 CSS pixels |
+| Mobile viewport | 390 × 844 CSS pixels |
+
+1. At both defined viewport sizes, verify empty input shows no autocomplete area.
+2. Enter `Lightning` and verify English loading feedback followed by card names only.
+3. Verify the 300 ms client debounce in DevTools **Network**: clear the log, enter `Li`, wait at
+   least 300 ms, then append `ghtning` without pausing for 300 ms between keystrokes. After waiting
+   another 300 ms, verify that autocomplete requests were sent for `Li` and the final `Lightning`
+   value only, not for intermediate text.
+4. Select `Lightning Bolt` by pointer or touch and verify the existing card search displays that
+   selected card.
+5. Repeat `Lightning` with Arrow Down, Arrow Up, Enter, and Escape. Confirm Escape retains the
+   typed text.
+6. Enter `zzzzzzzzzzzzzzzzzzzz` and verify the English empty-result state without stale suggestions.
+7. To reproduce an autocomplete-only failure in Chrome or Edge, open DevTools **Network** request
+   blocking and add the pattern `http://localhost:5173/api/cards/autocomplete*`. Reload the page,
+   enter `Lightning`, and verify the English autocomplete error. Then directly submit `Lightning
+   Bolt`; the existing card search must succeed because `/api/cards/search` is not blocked. Remove
+   the blocking pattern after this check.
+8. Verify the list, feedback, focus treatment, and search controls remain usable at both defined
+   viewport sizes.
+9. Verify a direct search without selecting a suggestion retains V1 validation, loading, result,
+   not-found, and error behavior.
+
+## Build and Startup Checks
+
+```bash
+npm run build --prefix frontend
+npm run start --prefix backend
+```
+
+The frontend build must finish successfully. The backend startup must report that it is listening
+on its configured port; stop the process after confirming startup.
