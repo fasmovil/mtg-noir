@@ -38,17 +38,20 @@ preserving direct search.
 
 ## Request Cadence and Current-Query Results
 
-**Decision**: Delay suggestion requests briefly after input changes and ensure that only the latest
+**Decision**: The frontend waits 300 ms after the most recent input change before sending an
+autocomplete request. The backend spaces outbound Scryfall autocomplete requests by at least 125 ms,
+limiting autocomplete traffic from one backend process to eight requests per second. Only the latest
 request may update visible suggestions.
 
-**Rationale**: A brief input pause reduces duplicate catalog requests and helps remain below the
-catalog's sustained traffic guidance. Tracking the current request prevents slower older responses
-from replacing newer suggestions.
+**Rationale**: A 300 ms pause removes requests for intermediate keystrokes. The backend pacing is
+the process-level safeguard below Scryfall's 10 requests-per-second guidance; the 125 ms minimum
+spacing permits at most eight outbound autocomplete requests per second. Tracking the current
+request prevents slower older responses from replacing newer suggestions.
 
 **Alternatives considered**:
 
 - Sending a request for every keystroke immediately: rejected because it can create unnecessary
-  catalog traffic.
+  catalog traffic and does not provide a repeatable process-level request ceiling.
 - Letting responses update in arrival order: rejected because an outdated response could violate
   the current-query requirement.
 

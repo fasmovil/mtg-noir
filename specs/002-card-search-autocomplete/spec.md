@@ -4,7 +4,9 @@
 
 **Created**: 2026-09-20
 
-**Status**: Draft
+**Status**: Approved
+
+**Approved**: 2026-09-20
 
 **Input**: Add card search autocomplete to MTG Noir so users can select relevant Magic: The Gathering
 card names while they type and continue through the existing card search flow.

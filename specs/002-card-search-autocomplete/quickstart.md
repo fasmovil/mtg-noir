@@ -38,16 +38,35 @@ Verify that automated coverage includes:
 
 Use the browser at `http://localhost:5173` after backend startup.
 
-1. Verify empty input shows no autocomplete area.
-2. Enter text with matching names and verify English loading feedback followed by names only.
-3. Select a suggestion by pointer or touch and verify the existing card search displays the
+Use these repeatable inputs and viewport sizes:
+
+| Purpose | Value |
+|---------|-------|
+| Matching autocomplete query | `Lightning` |
+| Card selected and searched | `Lightning Bolt` |
+| Empty-result query | `zzzzzzzzzzzzzzzzzzzz` |
+| Desktop viewport | 1440 × 900 CSS pixels |
+| Mobile viewport | 390 × 844 CSS pixels |
+
+1. At both defined viewport sizes, verify empty input shows no autocomplete area.
+2. Enter `Lightning` and verify English loading feedback followed by card names only.
+3. Verify the 300 ms client debounce in DevTools **Network**: clear the log, enter `Li`, wait at
+   least 300 ms, then append `ghtning` without pausing for 300 ms between keystrokes. After waiting
+   another 300 ms, verify that autocomplete requests were sent for `Li` and the final `Lightning`
+   value only, not for intermediate text.
+4. Select `Lightning Bolt` by pointer or touch and verify the existing card search displays that
    selected card.
-4. Repeat with Arrow Down, Arrow Up, Enter, and Escape. Confirm Escape retains the typed text.
-5. Verify an empty result and a suggestion error are clear in English and that the typed name can
-   still be submitted directly.
-6. Verify the list, feedback, focus treatment, and search controls remain usable at desktop and
-   narrow viewport widths.
-7. Verify a direct search without selecting a suggestion retains V1 validation, loading, result,
+5. Repeat `Lightning` with Arrow Down, Arrow Up, Enter, and Escape. Confirm Escape retains the
+   typed text.
+6. Enter `zzzzzzzzzzzzzzzzzzzz` and verify the English empty-result state without stale suggestions.
+7. To reproduce an autocomplete-only failure in Chrome or Edge, open DevTools **Network** request
+   blocking and add the pattern `http://localhost:5173/api/cards/autocomplete*`. Reload the page,
+   enter `Lightning`, and verify the English autocomplete error. Then directly submit `Lightning
+   Bolt`; the existing card search must succeed because `/api/cards/search` is not blocked. Remove
+   the blocking pattern after this check.
+8. Verify the list, feedback, focus treatment, and search controls remain usable at both defined
+   viewport sizes.
+9. Verify a direct search without selecting a suggestion retains V1 validation, loading, result,
    not-found, and error behavior.
 
 ## Build and Startup Checks

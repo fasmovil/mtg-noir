@@ -30,8 +30,11 @@ behavior; Vite production build.
 
 **Project Type**: Two-part web application: browser frontend plus HTTP backend.
 
-**Performance Goals**: Keep sustained catalog traffic below its published 10 requests-per-second
-guidance per application process. Suggestions must correspond only to the current input.
+**Performance Goals**: Keep sustained Scryfall autocomplete traffic below its published 10
+requests-per-second guidance per application process. The frontend waits 300 ms after the most
+recent input change before requesting suggestions. The backend spaces outbound Scryfall autocomplete
+requests by at least 125 ms, capping that endpoint at eight requests per second per backend process.
+Suggestions must correspond only to the current input.
 
 **Constraints**: Preserve the existing frontend/backend separation, V1 card DTO, current card-search
 endpoint and search behavior. Keep catalog-specific response structures in the backend. Add no
